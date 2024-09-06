@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import sharp from 'sharp';
-import { createCanvas } from 'canvas';
+import { createCanvas, registerFont  } from 'canvas';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -12,6 +12,8 @@ const __dirname = path.dirname( __filename );
 
 const app = express();
 app.use( cors( { origin: '*' } ) );
+// Register the Google Font you downloaded
+registerFont(path.join(__dirname, 'fonts', 'Roboto-Medium.ttf'), { family: 'Roboto' });
 
 // Serve static files from the 'dist' directory (React app)
 app.use( express.static( path.join( __dirname, '../dist' ) ) );
@@ -47,6 +49,7 @@ app.get('/:dimensions/:bgColor?/:fgColor?/:format?', (req, res) => {
     const imageFormat = validFormats.includes(format) ? format : 'png';
     const text = req.query.text || `${width} x ${height}`;
     const customFontSize = req.query?.fontsize?.trim() || '';
+    const fontFamily = req.query?.fontFamily?.trim() || 'Roboto'; // Use Google font family
 
     // Create a canvas element
     const canvas = createCanvas(width, height);
@@ -57,15 +60,15 @@ app.get('/:dimensions/:bgColor?/:fgColor?/:format?', (req, res) => {
     ctx.fillRect(0, 0, width, height);
 
     // Set font size dynamically
-    let fontSize = Math.min(width, height) / 4;
+    let fontSize = Math.min(width, height) / 5;
     if (fontSize < 10) fontSize = 10;
     if (customFontSize) {
         fontSize = parseInt(customFontSize);
     }
 
-    // Set text settings
+    // Set text settings with custom font and font-family
     ctx.fillStyle = `#${fgColor}`;
-    ctx.font = `${fontSize}px Arial`;
+    ctx.font = `${fontSize}px ${fontFamily}`; // Use the provided font-family or default to Roboto
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
