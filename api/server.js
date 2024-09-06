@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import sharp from 'sharp';
+import { createCanvas } from 'canvas';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -38,50 +39,61 @@ const validFormats = ['jpeg', 'png', 'webp', 'tiff'];
  * @param {string} [fontsize] - The font size of the text. If not provided, it
  **/
 
-app.get( '/:dimensions/:bgColor?/:fgColor?/:format?', ( req, res ) => {
+app.get('/:dimensions/:bgColor?/:fgColor?/:format?', (req, res) => {
     const { dimensions, bgColor = 'cccccc', fgColor = '000000', format = 'png' } = req.params;
-    const [widthStr, heightStr] = dimensions.split( 'x' );
-    const width = parseInt( widthStr ) || 300;
-    const height = heightStr ? parseInt( heightStr ) : width;
-    const imageFormat = validFormats.includes( format ) ? format : 'png';
+    const [widthStr, heightStr] = dimensions.split('x');
+    const width = parseInt(widthStr) || 300;
+    const height = heightStr ? parseInt(heightStr) : width;
+    const imageFormat = validFormats.includes(format) ? format : 'png';
     const text = req.query.text || `${width} x ${height}`;
     const customFontSize = req.query?.fontsize?.trim() || '';
-    // Calculate font size based on image size
-    let fontSize = Math.min( width, height ) / 5; // Base font size = 1/5 of the smallest dimension
-    if ( fontSize < 10 ) fontSize = 10; // Minimum font size to prevent it from being too small
 
-    // Create SVG with dynamic font size and padding
-    const encodedText = encodeURIComponent(text.trim());
-    const svg = `
-        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="#${bgColor}"/>
-        <text 
-            x="${width / 2}" 
-            y="${height / 1.7}" 
-            font-family="Arial, sans-serif" 
-            font-size="${customFontSize ? customFontSize : fontSize}px" 
-            fill="#${fgColor}" 
-            text-anchor="middle" 
-            dominant-baseline="central"
-            alignment-baseline="middle"
-        >
-            ${decodeURIComponent(encodedText)}
-        </text>
-        </svg>`;
+    // Create a canvas element
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
 
-    // Generate image using Sharp
-    sharp( Buffer.from( svg ) )
-        .toFormat( imageFormat )
-        .toBuffer()
-        .then( ( data ) => {
-            res.set( 'Content-Type', `image/${imageFormat}` );
-            res.send( data );
-        } )
-        .catch( ( err ) => {
-            console.error( err );
-            res.status( 500 ).send( 'Error generating image' );
-        } );
-} );
+    // Set background color
+    ctx.fillStyle = `#${bgColor}`;
+    ctx.fillRect(0, 0, width, height);
+
+    // Set font size dynamically
+    let fontSize = Math.min(width, height) / 4;
+    if (fontSize < 10) fontSize = 10;
+    if (customFontSize) {
+        fontSize = parseInt(customFontSize);
+    }
+
+    // Set text settings
+    ctx.fillStyle = `#${fgColor}`;
+    ctx.font = `${fontSize}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Draw text on canvas
+    ctx.fillText(decodeURIComponent(text), width / 2, height / 2);
+
+    // Convert the canvas to a buffer and send the image
+    canvas.toBuffer((err, buffer) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error generating image');
+            return;
+        }
+
+        // Use Sharp to convert buffer to the requested format (if needed)
+        sharp(buffer)
+            .toFormat(imageFormat)
+            .toBuffer()
+            .then(data => {
+                res.set('Content-Type', `image/${imageFormat}`);
+                res.send(data);
+            })
+            .catch(sharpErr => {
+                console.error(sharpErr);
+                res.status(500).send('Error generating image');
+            });
+    });
+});
 
 // This is to make sure all other routes (not /) go to React's index.html
 app.get( '*', ( req, res ) => {
