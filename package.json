@@ -1,26 +1,23 @@
 {
-  "name": "dummyimg",
-  "version": "0.1.0",
-  "private": true,
+  "name": "dummyImg-backend",
+  "version": "1.0.0",
+  "description": "Create custom dummy images effortlessly with dummyImg. Set your desired dimensions, background and foreground colors, and add personalized text. Perfect for web design, app prototyping, and marketing needs. Simply generate and share the image via a custom URL.",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js",
+    "build": "cd ../dist && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Dharmendra Kumar",
+  "license": "ISC",
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.7"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.7"
+    "nodemon": "^2.0.22"
   }
 }
