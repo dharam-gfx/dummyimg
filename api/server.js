@@ -51,26 +51,23 @@ app.get( '/:dimensions/:bgColor?/:fgColor?/:format?', ( req, res ) => {
     if ( fontSize < 10 ) fontSize = 10; // Minimum font size to prevent it from being too small
 
     // Create SVG with dynamic font size and padding
+    const encodedText = encodeURIComponent(text.trim());
     const svg = `
-                <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-                <style>
-                @import url('https://fonts.googleapis.com/css2?family=Arial');
-                </style>
-                <rect width="100%" height="100%" fill="#${bgColor}"/>
-                <text 
-                    x="${width / 2}" 
-                    y="${height / 1.7}" 
-                    font-family="'Arial', sans-serif" 
-                    font-size="${customFontSize ? customFontSize : fontSize}px" 
-                    fill="#${fgColor}" 
-                    text-anchor="middle" 
-                    dominant-baseline="central"
-                    alignment-baseline="middle"
-                >
-                    ${text}
-                </text>
-                </svg>`;
-
+        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#${bgColor}"/>
+        <text 
+            x="${width / 2}" 
+            y="${height / 1.7}" 
+            font-family="Arial, sans-serif" 
+            font-size="${customFontSize ? customFontSize : fontSize}px" 
+            fill="#${fgColor}" 
+            text-anchor="middle" 
+            dominant-baseline="central"
+            alignment-baseline="middle"
+        >
+            ${decodeURIComponent(encodedText)}
+        </text>
+        </svg>`;
 
     // Generate image using Sharp
     sharp( Buffer.from( svg ) )
