@@ -52,21 +52,25 @@ app.get( '/:dimensions/:bgColor?/:fgColor?/:format?', ( req, res ) => {
 
     // Create SVG with dynamic font size and padding
     const svg = `
-        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="#${bgColor}"/>
-        <text 
-            x="${width / 2}" 
-            y="${height / 1.7}" 
-            font-family="Arial, sans-serif" 
-            font-size="${customFontSize ? customFontSize : fontSize}px" 
-            fill="#${fgColor}" 
-            text-anchor="middle" 
-            dominant-baseline="central"
-            alignment-baseline="middle"
-        >
-            ${text}
-        </text>
-        </svg>`;
+                <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                <style>
+                @import url('https://fonts.googleapis.com/css2?family=Arial');
+                </style>
+                <rect width="100%" height="100%" fill="#${bgColor}"/>
+                <text 
+                    x="${width / 2}" 
+                    y="${height / 1.7}" 
+                    font-family="'Arial', sans-serif" 
+                    font-size="${customFontSize ? customFontSize : fontSize}px" 
+                    fill="#${fgColor}" 
+                    text-anchor="middle" 
+                    dominant-baseline="central"
+                    alignment-baseline="middle"
+                >
+                    ${text}
+                </text>
+                </svg>`;
+
 
     // Generate image using Sharp
     sharp( Buffer.from( svg ) )
