@@ -145,5 +145,3 @@ Here’s an example of a generated image link:
 This project is licensed under the MIT License.
 
 ---
-
-Feel free to make any additional modifications as needed!
