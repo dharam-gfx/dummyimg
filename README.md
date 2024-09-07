@@ -1,7 +1,3 @@
-Here’s the updated `README.md` with a preview of the generated image link:
-
----
-
 # dummyImg
 
 `dummyImg` is a full-stack application that allows users to generate custom dummy images with specific dimensions, colors, and text. It includes a backend for image processing and a front-end for interacting with the image generator. The website supports both light and dark mode themes.
