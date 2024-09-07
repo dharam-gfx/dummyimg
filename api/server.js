@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import sharp from 'sharp';
-import { createCanvas, registerFont  } from 'canvas';
+import { createCanvas, registerFont } from 'canvas';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,7 +13,7 @@ const __dirname = path.dirname( __filename );
 const app = express();
 app.use( cors( { origin: '*' } ) );
 // Register the Google Font you downloaded
-registerFont(path.join(__dirname, 'fonts', 'Roboto-Medium.ttf'), { family: 'Roboto' });
+registerFont( path.join( __dirname, 'fonts', 'Roboto-Medium.ttf' ), { family: 'Roboto' } );
 
 // Serve static files from the 'dist' directory (React app)
 app.use( express.static( path.join( __dirname, '../dist' ) ) );
@@ -41,29 +41,29 @@ const validFormats = ['jpeg', 'png', 'webp', 'tiff'];
  * @param {string} [fontsize] - The font size of the text. If not provided, it
  **/
 
-app.get('/:dimensions/:bgColor?/:fgColor?/:format?', (req, res) => {
+app.get( '/:dimensions/:bgColor?/:fgColor?/:format?', ( req, res ) => {
     const { dimensions, bgColor = 'cccccc', fgColor = '000000', format = 'png' } = req.params;
-    const [widthStr, heightStr] = dimensions.split('x');
-    const width = parseInt(widthStr) || 300;
-    const height = heightStr ? parseInt(heightStr) : width;
-    const imageFormat = validFormats.includes(format) ? format : 'png';
+    const [widthStr, heightStr] = dimensions.split( 'x' );
+    const width = parseInt( widthStr ) || 300;
+    const height = heightStr ? parseInt( heightStr ) : width;
+    const imageFormat = validFormats.includes( format ) ? format : 'png';
     const text = req.query.text || `${width} x ${height}`;
     const customFontSize = req.query?.fontsize?.trim() || '';
     const fontFamily = req.query?.fontFamily?.trim() || 'Roboto'; // Use Google font family
 
     // Create a canvas element
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
+    const canvas = createCanvas( width, height );
+    const ctx = canvas.getContext( '2d' );
 
     // Set background color
     ctx.fillStyle = `#${bgColor}`;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect( 0, 0, width, height );
 
     // Set font size dynamically
-    let fontSize = Math.min(width, height) / 5;
-    if (fontSize < 10) fontSize = 10;
-    if (customFontSize) {
-        fontSize = parseInt(customFontSize);
+    let fontSize = Math.min( width, height ) / 5;
+    if ( fontSize < 10 ) fontSize = 10;
+    if ( customFontSize ) {
+        fontSize = parseInt( customFontSize );
     }
 
     // Set text settings with custom font and font-family
@@ -73,30 +73,30 @@ app.get('/:dimensions/:bgColor?/:fgColor?/:format?', (req, res) => {
     ctx.textBaseline = 'middle';
 
     // Draw text on canvas
-    ctx.fillText(decodeURIComponent(text), width / 2, height / 2);
+    ctx.fillText( decodeURIComponent( text ), width / 2, height / 2 );
 
     // Convert the canvas to a buffer and send the image
-    canvas.toBuffer((err, buffer) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error generating image');
+    canvas.toBuffer( ( err, buffer ) => {
+        if ( err ) {
+            console.error( err );
+            res.status( 500 ).send( 'Error generating image' );
             return;
         }
 
         // Use Sharp to convert buffer to the requested format (if needed)
-        sharp(buffer)
-            .toFormat(imageFormat)
+        sharp( buffer )
+            .toFormat( imageFormat )
             .toBuffer()
-            .then(data => {
-                res.set('Content-Type', `image/${imageFormat}`);
-                res.send(data);
-            })
-            .catch(sharpErr => {
-                console.error(sharpErr);
-                res.status(500).send('Error generating image');
-            });
-    });
-});
+            .then( data => {
+                res.set( 'Content-Type', `image/${imageFormat}` );
+                res.status( 200 ).send( data );
+            } )
+            .catch( sharpErr => {
+                console.error( sharpErr );
+                res.status( 500 ).send( 'Error generating image' );
+            } );
+    } );
+} );
 
 // This is to make sure all other routes (not /) go to React's index.html
 app.get( '*', ( req, res ) => {

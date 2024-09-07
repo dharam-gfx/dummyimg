@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-
+import Header from './components/Header';
+import Footer from './components/Footer';
 const App = () => {
   const [width, setWidth] = useState( '400' );
   const [height, setHeight] = useState( '100' );
@@ -79,22 +80,26 @@ const App = () => {
     />
     {
       isInitialLoading ?
-        <div class="relative flex justify-center items-center bg-purple-950 bg-opacity-25 h-[100svh]">
-          <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500 "></div>
-          <img src="https://www.svgrepo.com/show/509001/avatar-thinking-9.svg" class="rounded-full h-28 w-28" />
+        <div className="relative flex justify-center items-center bg-purple-950 bg-opacity-25 h-[100svh]">
+          <div className="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500 "></div>
+          <img src="https://www.svgrepo.com/show/509001/avatar-thinking-9.svg" className="rounded-full h-28 w-28" />
         </div>
         :
         <div>
-          <div className=" bg-white dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center p-6">
-            <h1 className="text-4xl font-bold text-purple-500">Dummy Image Generator</h1>
-            <div className=" px-6  rounded-lg shadow-lg w-full max-w-2xl ">
+          <Header></Header>
+          <div className=" bg-white dark:bg-gray-900 flex flex-col items-center justify-center p-2 md:p-6">
+            <h1 className="md:mb-5 mb-2 md:text-4xl font-bold text-purple-500 text-2xl px-6">Dummy Image Generator</h1>
+            <p className='max-w-lg mx-auto px-4 text-center text-gray-600 dark:text-gray-400'>
+              The Dummy Image Generator creates customizable placeholder images with set dimensions, colors, and text for easy use in design and prototypes.
+            </p>
+            <div className=" md:p-6 p-3 border mt-2 border-gray-200 dark:border-0 rounded-lg shadow-lg w-full max-w-2xl ">
               <div className='w-100 mb-7'>
                 {imageUrl && (
-                  <div className="mt-3">
+                  <div className="">
                     <img src={imageUrl} alt="Generated" className="border border-gray-300 block mx-auto " />
                   </div>
                 )}
-                <div className="max-w-md mx-auto">
+                <div className=" mx-auto">
                   <div className="flex mt-5">
                     <input type="text" defaultValue={sharedUrl} id="website-admin" className="rounded-none rounded-s-md rounded-e-0 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" />
                     <button onClick={handleCopyLink} title='Copy' className="inline-flex items-center px-3 text-sm text-white bg-purple-500 border border-e-md border-gray-300 rounded-e-md  dark:border-gray-600">
@@ -104,7 +109,7 @@ const App = () => {
                 </div>
               </div>
 
-              <form className="max-w-md mx-auto" onSubmit={handleGenerateImage}>
+              <form className=" mx-auto" onSubmit={handleGenerateImage}>
                 <div className="grid md:grid-cols-2 md:gap-6">
                   <div className="relative z-0 w-full mb-5 group">
                     <input type="number" value={width} onChange={e => setWidth( e.target.value )} name="width" id="width" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white tex dark:border-gray-600 dark:focus:border-purple-500 focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required />
@@ -119,11 +124,11 @@ const App = () => {
                 <div className="grid grid-cols-2 md:gap-6">
                   <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="hs-color-input" className="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Background color</label>
-                    <input type="color" value={bgColor} onChange={e => setBgColor( e.target.value )} className="p-1 h-10 w-20 block bg-white border border-purple-500 cursor-pointer rounded-sm disabled:opacity-50 disabled:pointer-events-none" id="hs-color-input" title="Choose your color"></input>
+                    <input type="color" value={bgColor} onChange={e => setBgColor( e.target.value )} className="p-[1.5px] h-10 w-20 block bg-white border border-purple-500 cursor-pointer rounded-sm disabled:opacity-50 disabled:pointer-events-none" id="hs-color-input" title="Choose your color"></input>
                   </div>
                   <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="hs-color-input" className="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Text color</label>
-                    <input type="color" value={fgColor} onChange={e => setFgColor( e.target.value )} className="p-1 h-10 w-20 block bg-white border border-purple-500 cursor-pointer rounded-sm disabled:opacity-50 disabled:pointer-events-none" id="hs-color-input" title="Choose your color"></input>
+                    <input type="color" value={fgColor} onChange={e => setFgColor( e.target.value )} className="p-[1.5px] h-10 w-20 block bg-white border border-purple-500 cursor-pointer rounded-sm disabled:opacity-50 disabled:pointer-events-none" id="hs-color-input" title="Choose your color"></input>
                   </div>
                 </div>
 
@@ -173,6 +178,7 @@ const App = () => {
               </form>
             </div>
           </div>
+          <Footer />
         </div>
     }
   </>
