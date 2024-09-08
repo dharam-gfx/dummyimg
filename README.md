@@ -8,7 +8,7 @@
 DUMMYIMG/
 ├── api/                   # Backend folder (Express server and image generation logic)
 ├── dist/                  # Build folder for production files (frontend)
-├── front-end/             # Frontend folder (Next.js app)
+├── front-end/             # Frontend folder (react.js app)
 │   ├── dist/              # Build folder for production files (frontend)
 │   ├── node_modules/      # Frontend dependencies
 │   ├── public/            # Static assets for frontend
@@ -42,7 +42,7 @@ DUMMYIMG/
 
 ### Description
 
-The front-end of `dummyImg` is built using Next.js with React and styled using Tailwind CSS. It allows users to specify parameters for generating dummy images and view the results. The website is available in both light and dark mode themes.
+The front-end of `dummyImg` is built using React.js with React and styled using Tailwind CSS. It allows users to specify parameters for generating dummy images and view the results. The website is available in both light and dark mode themes.
 
 ### Scripts
 
