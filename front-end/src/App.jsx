@@ -34,6 +34,8 @@ const App = () => {
       }, 500 );
     }
   };
+// You don't need to make an API call here. Instead, you can directly generate images by using the URL format from 'https://dummyimg.vercel.app/400x100/7c04ec/ffffff/png?text=&fontsize='.
+// Just replace the values (dimensions, colors, text, font size) as needed in the URL to meet your specific requirements.
 
   const generateImageLink = async () => {
     const baseUrl = window.location?.origin?.includes( "http://localhost" ) ? "http://localhost:4000" : window.location?.origin;
