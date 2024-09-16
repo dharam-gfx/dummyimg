@@ -102,8 +102,9 @@ const App = () => {
                   </div>
                 )}
                 <div className=" mx-auto">
-                  <div className="flex mt-5">
-                    <input type="text" defaultValue={sharedUrl} id="website-admin" className="rounded-none rounded-s-md rounded-e-0 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" />
+                  <label htmlFor="copy-input" className="block text-sm font-medium mb-2 mt-5 text-gray-500 dark:text-gray-400">Image URL</label>
+                  <div className="flex ">
+                    <input type="text" defaultValue={sharedUrl} id="copy-input" className=" rounded-none rounded-s-md rounded-e-0 bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" />
                     <button onClick={handleCopyLink} title='Copy' className="inline-flex items-center px-3 text-sm text-white bg-purple-500 border border-e-md border-gray-300 rounded-e-md  dark:border-gray-600">
                       Copy
                     </button>
@@ -136,7 +137,7 @@ const App = () => {
 
                 <div className="grid md:grid-cols-2 md:gap-6">
                   <div className="relative z-0 w-full mb-5 group">
-                    <label htmlFor="format" className="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Image Format:</label>
+                    <label htmlFor="format" className="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Image Format</label>
                     <select
                       id="format"
                       value={imageFormat}
@@ -154,7 +155,7 @@ const App = () => {
                   <div className='flex items-end'>
                     <div className="relative z-0 w-full mb-5 group">
                       <input type="number" value={fontsize} onChange={e => setFontsize( e.target.value )} name="fontsize" id="fontsize" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-purple-500 focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " />
-                      <label htmlFor="fontsize" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-purple-600 peer-focus:dark:text-purple-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Font Size:</label>
+                      <label htmlFor="fontsize" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-purple-600 peer-focus:dark:text-purple-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Font Size</label>
                     </div>
                   </div>
                 </div>
